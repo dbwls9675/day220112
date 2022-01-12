@@ -1,4 +1,6 @@
 package Chapter09_ex06;
+//R = resource(안드로이드에서 많이 사용함)
+import java.util.Vector;
 
 import javax.swing.JButton;
 import javax.swing.JScrollPane;
@@ -12,8 +14,8 @@ public abstract class R {
 	public static DefaultTableModel tbModel;
 	public static JScrollPane scrollPane;
 
-	public static Object[][] data;
-	public static Object[] columnNames;
+	public static Vector data;
+	public static Vector<String> columnNames;
 
 	public static final JTextField txtFld1 = new JTextField(6);
 	public static final JTextField txtFld2 = new JTextField(6);
@@ -27,5 +29,5 @@ public abstract class R {
 	public static final JButton deleteBtn = new JButton("Delete");
 	public static final JButton finishBtn = new JButton("Finish");
 	
-	public static int sequence = 4;
+	public static final SaramDao dao = new SaramDao();
 }

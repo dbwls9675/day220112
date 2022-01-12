@@ -1,6 +1,7 @@
 package Chapter09_ex06;
 
 import java.util.Objects;
+import java.util.Vector;
 
 public class SaramDto {
 	private int idx;
@@ -72,5 +73,14 @@ public class SaramDto {
 		SaramDto other = (SaramDto) obj;
 		return Objects.equals(email, other.email) && idx == other.idx && Objects.equals(name, other.name)
 				&& Objects.equals(phone, other.phone);
+	}
+
+	public Vector toVector() {
+		Vector vector = new Vector();
+		vector.add(idx);
+		vector.add(name);
+		vector.add(email);
+		vector.add(phone);
+		return vector;
 	}
 }

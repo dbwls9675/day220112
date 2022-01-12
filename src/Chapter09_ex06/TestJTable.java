@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.beans.EventHandler;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -20,21 +21,23 @@ import myFrame.MyJFrame;
 import static Chapter09_ex06.R.*;
 
 public class TestJTable extends MyJFrame {
-	JTable table;
-	DefaultTableModel tbModel;
-	JScrollPane scrollPane;
-
-	Object[][] data;
-	Object[] columnNames;
 
 	public TestJTable() {
 		super("JTable 연습", 640, 480);
 	}
 
 	private void mkTableData() {
-		columnNames = new Object[] { "IDX", "USER", "EMAIL", "PHONE" };
-		data = new Object[][] { { 1, "hong", "hong@naver.com", "010-1234-5678" },
-				{ 2, "kim", "kim@naver.com", "010-2222-2222" }, { 3, "lee", "lee@naver.com", "010-3333-3333" }, };
+		// columnNames = new Object[] { "IDX", "USER", "EMAIL", "PHONE" };
+//		data = new Object[][] { { 1, "hong", "hong@naver.com", "010-1234-5678" },
+//				{ 2, "kim", "kim@naver.com", "010-2222-2222" }, { 3, "lee", "lee@naver.com", "010-3333-3333" }, };
+		columnNames = new Vector();
+		columnNames.add("IDX");
+		columnNames.add("NAME");
+		columnNames.add("EMAIL");
+		columnNames.add("PHONE");
+
+		// Object[][] 배열을 대체하는 코드 →model로 넘어가야됨
+		data = dao.selectAll();
 	}
 
 	protected void displayLayer() {
@@ -59,8 +62,11 @@ public class TestJTable extends MyJFrame {
 		// 버튼 이벤트 핸들러 추가
 		allBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(">>> allBtn 클릭!");
-
+				tbModel.setDataVector(null, columnNames);// 테이블만 남고 데이터 지워짐
+				Vector<Vector> saramList = dao.selectAll();
+				for (Vector vector : saramList) {
+					tbModel.addRow(vector);
+				}
 			}
 		});
 
@@ -74,29 +80,45 @@ public class TestJTable extends MyJFrame {
 				String phone = txtFld4.getText();
 				txtFld4.setText("");
 				// TableModel에 반영해주기.
-				tbModel.addRow(new Object[] { sequence++, name, email, phone });
+				// dao에 저장 후
+				dao.insert(new SaramDto(0, name, email, phone));
+				// list를 다시 그려준다.
+				displayList();
 
+			}
+
+			private void displayList() {
+				tbModel.setDataVector(null, columnNames);// 테이블만 남고 데이터 지워짐
+				Vector<Vector> saramList = dao.selectAll();
+				for (Vector vector : saramList) {
+					tbModel.addRow(vector);
+				}
 			}
 		});
 
 		searchBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(">>> searchBtn 클릭!");
-
+				String name = txtFld2.getText();
+				Vector vector = dao.search(new SaramDto(0, name, "", ""));
+				tbModel.setDataVector(null, columnNames);
+				tbModel.addRow(vector);
+//				txtFld2.setText("");// 입력후 다시 공란
 			}
+
 		});
 
 		modifyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(">>> modifyBtn 클릭!");
 
 			}
 		});
 
 		deleteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(">>> deleteBtn 클릭!");
-
+				String name = txtFld2.getText();
+				Vector vector = dao.search(new SaramDto(0, name, "", ""));
+				tbModel.setDataVector(null, columnNames);
+				// tbModel.removeRow(vector);
 			}
 		});
 
@@ -113,8 +135,6 @@ public class TestJTable extends MyJFrame {
 
 			@Override
 			public void mouseReleased(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
 			@Override
@@ -132,29 +152,20 @@ public class TestJTable extends MyJFrame {
 				String name = (String) tbModel.getValueAt(row, 1);
 				String email = (String) tbModel.getValueAt(row, 2);
 				String phone = (String) tbModel.getValueAt(row, 3);
-				//찾아 온 데이터 적용하기
-				txtFld1.setText(""+idx);
+				// 찾아 온 데이터 적용하기
+				txtFld1.setText("" + idx);
 				txtFld2.setText(name);
 				txtFld3.setText(email);
 				txtFld4.setText(phone);
 			}
 
-			@Override
 			public void mouseExited(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
-			@Override
 			public void mouseEntered(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 
-			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Auto-generated method stub
-
 			}
 		});
 
