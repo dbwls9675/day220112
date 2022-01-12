@@ -1,0 +1,17 @@
+package Chapter09_ex06;
+
+import javax.swing.JPanel;
+import static Chapter09_ex06.R.*;
+
+public class BottomPane extends JPanel {
+	
+
+	public BottomPane() {
+		this.add(allBtn);
+		this.add(inputBtn);
+		this.add(searchBtn);
+		this.add(modifyBtn);
+		this.add(deleteBtn);
+		this.add(finishBtn);
+	}
+}
