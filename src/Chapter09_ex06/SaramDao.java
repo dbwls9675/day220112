@@ -52,5 +52,9 @@ public class SaramDao {
 		return null;
 
 	}
+	
+	public Vector modyfi(SaramDto saramDto) {
+		return null;
+	}
 
 }

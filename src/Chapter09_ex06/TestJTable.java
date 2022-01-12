@@ -109,16 +109,20 @@ public class TestJTable extends MyJFrame {
 
 		modifyBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				String idx = txtFld1.getText();
+				String name = txtFld2.getText();
+				String email = txtFld3.getText();
+				String phone = txtFld4.getText();
+				//Vector vector = dao.modify(new SaramDto(0, name, "", ""));
 			}
 		});
 
 		deleteBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String name = txtFld2.getText();
-				Vector vector = dao.search(new SaramDto(0, name, "", ""));
+				Vector vector = dao.delete(new SaramDto(0, name, "", ""));
 				tbModel.setDataVector(null, columnNames);
-				// tbModel.removeRow(vector);
+				//tbModel.removeRow();
 			}
 		});
 
